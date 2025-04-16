@@ -1,2 +1,2 @@
-# hill-climb-racing-knockoff
+# Hill Climb Racing knockoff
 Mountain Car project with the use of Gymnasium
