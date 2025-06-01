@@ -1,1 +1,1 @@
-Folder for files: Report.pdf, Presentation.pdf, Assumptions.pdf
+Folder for: solutions/source files/libraries/scripts/other software related stuff
