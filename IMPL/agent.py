@@ -2,6 +2,7 @@ import gymnasium as gym
 import numpy as np
 import pickle
 import os
+import time
 from config import N_BINS, MODEL_PATH, SUMMARY_PATH
 from utils import create_bins, discretize, plot_training_summary, save_model, load_model
 
@@ -78,13 +79,14 @@ def evaluate_agent(episodes=1, render=True):
     q_table = load_model(MODEL_PATH)
 
     # Tracking statistics
-    velocities, steps = np.zeros(episodes), np.zeros(episodes)
+    velocities, steps, times = np.zeros(episodes), np.zeros(episodes), np.zeros(episodes)
 
     for ep in range(episodes):
         state = env.reset()[0]
         s_p, s_v = discretize(state, pos_bins, vel_bins)
 
         done, ep_vel, ep_steps = False, 0, 0
+        start_time = time.time()
 
         while not done and ep_steps < 1000:
             # Always exploit during evaluation
@@ -95,11 +97,21 @@ def evaluate_agent(episodes=1, render=True):
             ep_steps += 1
 
         # Record stats
+        times[ep] = time.time() - start_time
         velocities[ep], steps[ep] = ep_vel / ep_steps, ep_steps
 
     # Close environment and display results
     env.close()
+
+    # Print evaluation summary
     print(f"\n--- Evaluation for {episodes} episode(s) ---")
-    print("Average velocity:", np.mean(velocities))
     print("Max velocity reached:", np.max(velocities))
-    print("Steps to reach goal:", np.min(steps))
+    if episodes == 1:
+        print("Time to goal (s):", times[ep])
+        print("Steps to goal:", steps[ep])
+    else:
+        print("Average max velocity:", np.mean(velocities))
+        print("Min steps to goal:", np.min(steps))
+        print("Avg steps to goal:", np.mean(steps))
+        print("Avg time to goal (s):", np.mean(times))
+        print("Min time to goal (s):", np.min(times))

@@ -5,4 +5,4 @@ if __name__ == "__main__":
     # train_agent(episodes=5000, render=False)
 
     # Evaluate the agent
-    evaluate_agent(episodes=1, render=True)
+    evaluate_agent(episodes=10, render=True)
