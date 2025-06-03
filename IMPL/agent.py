@@ -31,6 +31,7 @@ def train_agent(episodes=5000, render=False):
     velocities = np.zeros(episodes)
 
     for ep in range(episodes):
+        print ('Episode: ', ep)
         state = env.reset()[0]  # Get initial state
         s_p, s_v = discretize(state, pos_bins, vel_bins)
 
